@@ -20,11 +20,18 @@ defaultConf = Conf {
     filepath = Nothing
 }
 
-checkArgs :: [String] -> IO ()
-checkArgs args
+checkOrderArgs :: [String] -> IO ()
+checkOrderArgs args
+    | args !! 0 /= "-n" = exitWith (ExitFailure 84)
+    | args !! 2 /= "-l" = exitWith (ExitFailure 84)
+    | args !! 4 /= "-f" = exitWith (ExitFailure 84)
+    | otherwise = return ()
+
+checkNbArgs :: [String] -> IO ()
+checkNbArgs args
     | length args /= 6 && length args /= 1 || length args == 0 = exitWith (ExitFailure 84)
     | length args == 1 && args !! 0 /= "-h" = exitWith (ExitFailure 84)
-    | length args == 1 && args !! 0 == "-h" = do
+    | length args == 1 && args !! 0 == "-h" = do 
         let usagestring = usage True
         putStrLn usagestring
     | otherwise = return ()
@@ -57,7 +64,8 @@ distance (r1, g1, b1) (r2, g2, b2) =
 main :: IO ()
 main = do
     args <- getArgs
-    checkArgs args
+    checkNbArgs args
+    checkNbArgs args
     let conf = getOpts defaultConf args
     print conf
 --     -- let computeDistance = distance (3,4,5) (3,8,2)
