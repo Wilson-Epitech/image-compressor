@@ -3,6 +3,13 @@ import System.Environment (getArgs)
 import System.Exit (exitWith, ExitCode(ExitFailure))
 import Lib
 
+-- error handling: /4
+
+-- no arguments
+-- bad arguments
+-- ordres des arguments
+-- tous les arguments
+
 data Conf = Conf {
     nbcolors :: Maybe Int,
     cvglimit :: Int,
@@ -44,14 +51,18 @@ distance (r1, g1, b1) (r2, g2, b2) =
 main :: IO ()
 main = do
     args <- getArgs
-    let conf = getOpts defaultConf args
-    print conf
+    print args
+    if length args /= 6
+        then exitWith (ExitFailure 84)
+        else do 
+        let conf = getOpts defaultConf args
+        print conf
 --     -- let usagestring = usage(True)
 --     -- putStrLn usagestring
 --     -- let computeDistance = distance (3,4,5) (3,8,2)
 --     -- print computeDistance
 --     args <- getArgs
---     let getOpts args
+--     let getOpts args 
 --     -- print args
 --     -- print (args !! 1)
 --     -- if null args
