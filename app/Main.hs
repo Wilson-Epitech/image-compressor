@@ -1,3 +1,10 @@
+{-
+-- IMAGE_COMPRESSOR PROJECT, 2024
+-- image-compressor
+-- File description:
+-- Main
+-}
+
 module Main (main) where
 import System.Environment (getArgs)
 import System.Exit (exitWith, ExitCode(ExitFailure))
@@ -29,12 +36,12 @@ checkOrderArgs args
 
 checkNbArgs :: [String] -> IO ()
 checkNbArgs args
-    | length args /= 6 && length args /= 1 || length args == 0 = exitWith (ExitFailure 84)
+    | length args /= 6 && length args /= 1 ||
+    length args == 0 = exitWith (ExitFailure 84)
     | length args == 1 && args !! 0 /= "-h" = exitWith (ExitFailure 84)
-    | length args == 1 && args !! 0 == "-h" = do 
-        let usagestring = usage True
-        putStrLn usagestring
+    | length args == 1 && args !! 0 == "-h" = putStrLn (usage True)
     | otherwise = return ()
+
 
 getOpts :: Conf -> [String] -> Conf
 getOpts conf [] = conf
@@ -47,10 +54,11 @@ getOpts conf ("-f":value:rest)
 getOpts conf _ = conf
 
 usage :: Bool -> String
-usage True = "USAGE: ./imageCompressor -n N -l L -f F\n\n" ++
-            "      N       number of colors in the final image\n" ++
-            "      L       convergence limit\n" ++
-            "      F       path to the file containing the colors of the pixels\n"
+usage True =
+    "USAGE: ./imageCompressor -n N -l L -f F\n\n" ++
+    "      N       number of colors in the final image\n" ++
+    "      L       convergence limit\n" ++
+    "      F       path to the file containing the colors of the pixels\n"
 usage False = []
 
 distance :: (Int, Int, Int) -> (Int, Int, Int) -> Float
