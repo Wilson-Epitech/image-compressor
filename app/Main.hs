@@ -4,11 +4,8 @@ import System.Exit (exitWith, ExitCode(ExitFailure))
 import Lib
 
 -- error handling: /4
-
--- no arguments
 -- bad arguments
 -- ordres des arguments
--- tous les arguments
 
 data Conf = Conf {
     nbcolors :: Maybe Int,
@@ -22,6 +19,15 @@ defaultConf = Conf {
     cvglimit = 0,
     filepath = Nothing
 }
+
+checkArgs :: [String] -> IO ()
+checkArgs args
+    | length args /= 6 && length args /= 1 || length args == 0 = exitWith (ExitFailure 84)
+    | length args == 1 && args !! 0 /= "-h" = exitWith (ExitFailure 84)
+    | length args == 1 && args !! 0 == "-h" = do
+        let usagestring = usage True
+        putStrLn usagestring
+    | otherwise = return ()
 
 getOpts :: Conf -> [String] -> Conf
 getOpts conf [] = conf
@@ -51,22 +57,10 @@ distance (r1, g1, b1) (r2, g2, b2) =
 main :: IO ()
 main = do
     args <- getArgs
-    print args
-    if length args /= 6
-        then exitWith (ExitFailure 84)
-        else do 
-        let conf = getOpts defaultConf args
-        print conf
---     -- let usagestring = usage(True)
---     -- putStrLn usagestring
+    checkArgs args
+    let conf = getOpts defaultConf args
+    print conf
 --     -- let computeDistance = distance (3,4,5) (3,8,2)
 --     -- print computeDistance
---     args <- getArgs
---     let getOpts args 
---     -- print args
---     -- print (args !! 1)
---     -- if null args
---     --     then exitWith (ExitFailure 84)
---     --     else do
 --     --         content <- readFile (head args)
 --     --         putStrLn content
