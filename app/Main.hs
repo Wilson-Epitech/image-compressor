@@ -10,9 +10,7 @@ import System.Environment (getArgs)
 import System.Exit (exitWith, ExitCode(ExitFailure))
 import Lib
 
--- error handling: /4
--- bad arguments
--- ordres des arguments
+-- error handling: bad arguments
 
 data Conf = Conf {
     nbcolors :: Maybe Int,
@@ -73,10 +71,8 @@ main :: IO ()
 main = do
     args <- getArgs
     checkNbArgs args
-    checkNbArgs args
+    checkOrderArgs args
     let conf = getOpts defaultConf args
     print conf
---     -- let computeDistance = distance (3,4,5) (3,8,2)
---     -- print computeDistance
 --     --         content <- readFile (head args)
 --     --         putStrLn content
