@@ -25,6 +25,9 @@ defaultConf = Conf {
     filepath = Nothing
 }
 
+-- checkTypeArgs :: [String] -> IO ()
+-- checkTypeArgs args =
+
 checkOrderArgs :: [String] -> IO ()
 checkOrderArgs args
     | args !! 0 /= "-n" = exitWith (ExitFailure 84)
@@ -61,9 +64,9 @@ usage False = []
 
 distance :: (Int, Int, Int) -> (Int, Int, Int) -> Float
 distance (r1, g1, b1) (r2, g2, b2) =
-    let r = fromIntegral (r1 - r2)^2
-        g = fromIntegral (g1 - g2)^2
-        b = fromIntegral (b1 - b2)^2
+    let r = fromIntegral (r1 - r2)^(2 :: Int)
+        g = fromIntegral (g1 - g2)^(2 :: Int)
+        b = fromIntegral (b1 - b2)^(2 :: Int)
         distanceSquared = r + g + b
     in sqrt distanceSquared
 
@@ -72,6 +75,7 @@ main = do
     args <- getArgs
     checkNbArgs args
     checkOrderArgs args
+    -- checkTypeArgs args
     let conf = getOpts defaultConf args
     print conf
 --     --         content <- readFile (head args)
