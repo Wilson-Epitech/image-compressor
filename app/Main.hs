@@ -27,6 +27,12 @@ defaultConf = Conf {
     filepath = Nothing
 }
 
+checkNegativeArgs :: Conf -> IO ()
+checkNegativeArgs conf
+    | (nbcolors conf) <= Just 0 = exitWith (ExitFailure 84)
+    | (cvglimit conf) <= Just 0 = exitWith (ExitFailure 84)
+    | otherwise = return ()
+
 checkOrderArgs :: [String] -> IO ()
 checkOrderArgs args
     | args !! 0 /= "-n" = exitWith (ExitFailure 84)
@@ -80,6 +86,7 @@ main = do
     checkNbArgs args
     checkOrderArgs args
     let conf = getOpts defaultConf args
+    checkNegativeArgs conf
     checkDataConf conf
     print conf
     --         content <- readFile (head args)
