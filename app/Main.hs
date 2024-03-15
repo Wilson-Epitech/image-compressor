@@ -7,26 +7,25 @@
 
 module Main (main) where
 import System.Environment (getArgs)
+import Text.Read (readMaybe)
+import Data.Maybe (isNothing)
 import System.Exit (exitWith, ExitCode(ExitFailure))
 import Lib
 
--- error handling: bad arguments
+-- error handling: negatif number
 
 data Conf = Conf {
     nbcolors :: Maybe Int,
-    cvglimit :: Int,
+    cvglimit :: Maybe Float,
     filepath :: Maybe String
 } deriving Show
 
 defaultConf :: Conf
 defaultConf = Conf {
     nbcolors = Nothing,
-    cvglimit = 0,
+    cvglimit = Nothing,
     filepath = Nothing
 }
-
--- checkTypeArgs :: [String] -> IO ()
--- checkTypeArgs args =
 
 checkOrderArgs :: [String] -> IO ()
 checkOrderArgs args
@@ -43,15 +42,20 @@ checkNbArgs args
     | length args == 1 && args !! 0 == "-h" = putStrLn (usage True)
     | otherwise = return ()
 
+checkDataConf :: Conf -> IO ()
+checkDataConf conf
+    | isNothing (nbcolors  conf) = exitWith (ExitFailure 84)
+    | isNothing (cvglimit conf) = exitWith (ExitFailure 84)
+    | otherwise = return ()
 
 getOpts :: Conf -> [String] -> Conf
 getOpts conf [] = conf
 getOpts conf ("-n":value:rest)
-    = getOpts conf {nbcolors = Just (read value)} rest
+    = getOpts conf {nbcolors = readMaybe value} rest
 getOpts conf ("-l":value:rest)
-    = getOpts conf {cvglimit = (read value)} rest
+    = getOpts conf {cvglimit = readMaybe value} rest
 getOpts conf ("-f":value:rest)
-    = getOpts conf {filepath = Just (value)} rest
+    = getOpts conf {filepath = Just value} rest
 getOpts conf _ = conf
 
 usage :: Bool -> String
@@ -75,8 +79,8 @@ main = do
     args <- getArgs
     checkNbArgs args
     checkOrderArgs args
-    -- checkTypeArgs args
     let conf = getOpts defaultConf args
+    checkDataConf conf
     print conf
---     --         content <- readFile (head args)
---     --         putStrLn content
+    --         content <- readFile (head args)
+    --         putStrLn content
