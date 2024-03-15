@@ -9,10 +9,11 @@ module Main (main) where
 import System.Environment (getArgs)
 import Text.Read (readMaybe)
 import Data.Maybe (isNothing)
+import Data.List (intercalate)
 import System.Exit (exitWith, ExitCode(ExitFailure))
 import Lib
 
--- error handling: negatif number
+-- error handling: file exist ?
 
 data Conf = Conf {
     nbcolors :: Maybe Int,
@@ -26,6 +27,9 @@ defaultConf = Conf {
     cvglimit = Nothing,
     filepath = Nothing
 }
+
+convertToString :: [String] -> String
+convertToString = intercalate ","
 
 checkNegativeArgs :: Conf -> IO ()
 checkNegativeArgs conf
@@ -89,5 +93,8 @@ main = do
     checkNegativeArgs conf
     checkDataConf conf
     print conf
-    --         content <- readFile (head args)
-    --         putStrLn content
+    content <- readFile (args !! 5)
+    let linesfile = lines content
+    print linesfile
+    let linesa = convertToString linesfile
+    print linesa
