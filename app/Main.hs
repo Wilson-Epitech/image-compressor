@@ -71,6 +71,11 @@ checkDataConf conf
     | isNothing (cvglimit conf) = exitWith84error
     | otherwise = return ()
 
+checkLengthString :: String -> IO ()
+checkLengthString str
+    | length str == 0 = exitWith84error
+    | otherwise = return ()
+
 getOpts :: Conf -> [String] -> Conf
 getOpts conf [] = conf
 getOpts conf ("-n":value:rest)
@@ -108,5 +113,6 @@ main = do
     contentFile <- readFile (args !! 5)
     let contentFileTolines = lines contentFile
     let linesWithCommas = convertToString contentFileTolines
+    checkLengthString linesWithCommas
     let updatedList = defaultList { listOfTruples = Just linesWithCommas }
     putStrLn (fromJust (listOfTruples updatedList))
