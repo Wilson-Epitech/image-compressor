@@ -9,6 +9,7 @@ module Main (main) where
 import System.Environment (getArgs)
 import Text.Read (readMaybe)
 import Data.Maybe (isNothing)
+import Data.Maybe (fromJust)
 import Data.List (intercalate)
 import System.Exit (exitWith, ExitCode(ExitFailure))
 import Lib
@@ -26,6 +27,15 @@ defaultConf = Conf {
     nbcolors = Nothing,
     cvglimit = Nothing,
     filepath = Nothing
+}
+
+data List = List {
+    listOfTruples :: Maybe String
+}
+
+defaultList :: List
+defaultList = List {
+    listOfTruples = Nothing
 }
 
 convertToString :: [String] -> String
@@ -92,9 +102,8 @@ main = do
     let conf = getOpts defaultConf args
     checkNegativeArgs conf
     checkDataConf conf
-    print conf
-    content <- readFile (args !! 5)
-    let linesfile = lines content
-    print linesfile
-    let linesa = convertToString linesfile
-    print linesa
+    contentFile <- readFile (args !! 5)
+    let contentFileTolines = lines contentFile
+    let linesWithCommas = convertToString contentFileTolines
+    let updatedList = defaultList { listOfTruples = Just linesWithCommas }
+    putStrLn (fromJust (listOfTruples updatedList))
