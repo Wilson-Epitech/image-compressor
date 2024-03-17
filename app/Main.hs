@@ -38,34 +38,37 @@ defaultList = List {
     listOfTruples = Nothing
 }
 
+exitWith84error :: IO ()
+exitWith84error = exitWith (ExitFailure 84)
+
 convertToString :: [String] -> String
 convertToString = intercalate ","
 
 checkNegativeArgs :: Conf -> IO ()
 checkNegativeArgs conf
-    | (nbcolors conf) <= Just 0 = exitWith (ExitFailure 84)
-    | (cvglimit conf) <= Just 0 = exitWith (ExitFailure 84)
+    | (nbcolors conf) <= Just 0 = exitWith84error
+    | (cvglimit conf) <= Just 0 = exitWith84error
     | otherwise = return ()
 
 checkOrderArgs :: [String] -> IO ()
 checkOrderArgs args
-    | args !! 0 /= "-n" = exitWith (ExitFailure 84)
-    | args !! 2 /= "-l" = exitWith (ExitFailure 84)
-    | args !! 4 /= "-f" = exitWith (ExitFailure 84)
+    | args !! 0 /= "-n" = exitWith84error
+    | args !! 2 /= "-l" = exitWith84error
+    | args !! 4 /= "-f" = exitWith84error
     | otherwise = return ()
 
 checkNbArgs :: [String] -> IO ()
 checkNbArgs args
     | length args /= 6 && length args /= 1 ||
-    length args == 0 = exitWith (ExitFailure 84)
-    | length args == 1 && args !! 0 /= "-h" = exitWith (ExitFailure 84)
+    length args == 0 = exitWith84error
+    | length args == 1 && args !! 0 /= "-h" = exitWith84error
     | length args == 1 && args !! 0 == "-h" = putStrLn (usage True)
     | otherwise = return ()
 
 checkDataConf :: Conf -> IO ()
 checkDataConf conf
-    | isNothing (nbcolors  conf) = exitWith (ExitFailure 84)
-    | isNothing (cvglimit conf) = exitWith (ExitFailure 84)
+    | isNothing (nbcolors  conf) = exitWith84error
+    | isNothing (cvglimit conf) = exitWith84error
     | otherwise = return ()
 
 getOpts :: Conf -> [String] -> Conf
