@@ -9,6 +9,8 @@ module Main (main) where
 import ErrorHandling
 
 -- error handling: file exist ?
+--faire un try/catch pour savoir si le file exsist
+--retirer les positions (0,0)
 
 main :: IO ()
 main = errorHandling
