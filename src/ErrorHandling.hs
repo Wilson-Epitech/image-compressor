@@ -16,8 +16,7 @@ import Lib
 import Error
 import Usage
 
--- check si le nombre de pos de listOfTuples est egal au nombre du truples de listofTruples sinon exit84error
--- check les string avec length et comparer les length
+-- deplacer isEven et countElements dans lib.hs
 
 data List = List {
     listOfTruples :: [(Int, Int, Int)],
@@ -29,6 +28,19 @@ defaultList = List {
     listOfTruples = [],
     listOfTuples = []
 }
+
+isEven :: Int -> Bool
+isEven n
+    | n `mod` 2 == 0 = False
+    | otherwise = True
+
+countElements :: [String] -> Int
+countElements = length
+
+checkLengthFromList :: Int -> IO ()
+checkLengthFromList n
+    | isEven n == True = exitWith84error
+    | otherwise = return ()
 
 processStrings :: [String] -> List -> List
 processStrings [] list = list
@@ -63,6 +75,7 @@ errorHandling = do
         test = unwords contentFileTolines
         content = splitStr test
         result = processStrings content defaultList
+    checkLengthFromList (countElements content)
     print result
 
 checkNegativeArgs :: Conf -> IO ()
