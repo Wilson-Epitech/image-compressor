@@ -11,7 +11,6 @@ module ErrorHandling (
 
 import Data.Maybe (isNothing)
 import System.Environment (getArgs)
-import Data.Maybe (fromMaybe)
 import GetArgs
 import Lib
 import Error
@@ -21,15 +20,24 @@ import Usage
 -- check les string avec length et comparer les length
 
 data List = List {
-    listOfTruples :: Maybe String,
-    listOfTuples :: Maybe String
+    listOfTruples :: [(Int, Int, Int)],
+    listOfTuples :: [(Int, Int)]
 } deriving Show
 
 defaultList :: List
 defaultList = List {
-    listOfTruples = Nothing,
-    listOfTuples = Nothing
+    listOfTruples = [],
+    listOfTuples = []
 }
+
+processStrings :: [String] -> List -> List
+processStrings [] list = list
+processStrings (x:xs) (List t3s t2s)
+    | countNumbers x == 1 = processStrings xs
+        (List t3s ((read x :: (Int, Int)) : t2s))
+    | countNumbers x == 2 = processStrings xs
+        (List ((read x :: (Int, Int, Int)) : t3s) t2s)
+    | otherwise = processStrings xs (List t3s t2s)
 
 splitStr :: String -> [String]
 splitStr [] = []
@@ -42,32 +50,6 @@ splitStr (x:xs)
 countNumbers :: String -> Int
 countNumbers = length.filter (== ',')
 
-updateTuples :: String -> List -> IO List
-updateTuples str list = 
-    let currentTuples = fromMaybe "" (listOfTuples list)
-        updatedTuples = if null currentTuples then str
-        else currentTuples ++ "," ++ str
-    in return $ list { listOfTuples = Just updatedTuples }
-
-updateTruples :: String -> List -> IO List
-updateTruples str list = 
-    let currentTruples = fromMaybe "" (listOfTruples list)
-        updatedTruples = if null currentTruples then str
-        else currentTruples ++ "," ++ str
-    in return $ list { listOfTruples = Just updatedTruples }
-
-updateList :: String -> List -> IO List
-updateList str list
-    | countNumbers str == 1 = updateTuples str list
-    | countNumbers str == 2 = updateTruples str list
-    | otherwise = return list
-
-updateListRecursive :: [String] -> List -> IO List
-updateListRecursive [] list = return list
-updateListRecursive (x:xs) list = do
-    updatedList <- updateList x list
-    updateListRecursive xs updatedList
-
 errorHandling :: IO ()
 errorHandling = do
     args <- getArgs
@@ -78,14 +60,10 @@ errorHandling = do
     checkDataConf conf
     contentFile <- readFile (args !! 5)
     let contentFileTolines = lines contentFile
-    let test = unwords contentFileTolines
-    print contentFileTolines
-    print test
-    let content = splitStr test
-    print content
-    finalList <- updateListRecursive content defaultList
-    print finalList
-    -- rajouter le check pour savoir si les 2 listes son égales
+        test = unwords contentFileTolines
+        content = splitStr test
+        result = processStrings content defaultList
+    print result
 
 checkNegativeArgs :: Conf -> IO ()
 checkNegativeArgs conf
