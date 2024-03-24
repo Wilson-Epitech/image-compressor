@@ -7,7 +7,10 @@
 
 module Lib (
     convertToString,
-    distance
+    distance,
+    countNumbers,
+    isEven,
+    countElements
 ) where
 
 import Data.List (intercalate)
@@ -22,3 +25,14 @@ distance (r1, g1, b1) (r2, g2, b2) =
         b = fromIntegral (b1 - b2)^(2 :: Int)
         distanceSquared = r + g + b
     in sqrt distanceSquared
+
+countNumbers :: String -> Int
+countNumbers = length.filter (== ',')
+
+isEven :: Int -> Bool
+isEven n
+    | n `mod` 2 == 0 = False
+    | otherwise = True
+
+countElements :: [String] -> Int
+countElements = length
