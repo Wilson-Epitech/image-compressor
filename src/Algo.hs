@@ -21,9 +21,6 @@ data Clusters = Clusters {
 randomInt :: Int -> Int -> IO Int
 randomInt minValue maxValue = randomRIO (minValue, maxValue)
 
--- createCluster :: (Int, Int, Int) -> Clusters
--- createCluster centroid = Clusters { centroides = centroid, pixels = [] }
-
 generateClusters :: [(Int, Int, Int)] -> Int -> Int -> Int -> IO [Clusters]
 generateClusters _ 0 _ _ = return []
 generateClusters list n minValue maxValue = do
