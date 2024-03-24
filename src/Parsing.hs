@@ -11,7 +11,6 @@ module Parsing (
 ) where
 
 import Lib
-import Error
 import ErrorHandling
 
 data List = List {
