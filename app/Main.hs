@@ -16,8 +16,8 @@ import GetArgs
 -- error handling: file exist ?
 -- faire un try/catch pour savoir si le fichier existe
 
-doAlgo :: [String] -> IO ()
-doAlgo args = do
+getStructArgs :: [String] -> IO ()
+getStructArgs args = do
     list <- parseInput args
     let conf = getOpts defaultConf args
         pixels = listOfTruples list
@@ -32,4 +32,4 @@ main :: IO ()
 main = do
     args <- getArgs
     errorHandling args
-    doAlgo args
+    getStructArgs args
