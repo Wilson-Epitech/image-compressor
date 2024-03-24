@@ -103,3 +103,9 @@ centroidDistance centroid1 centroid2 = distance centroid1 centroid2
 checkConvergence :: [Clusters] -> [Clusters] -> Float -> Bool
 checkConvergence prevClusters newClusters limit =
     all (centroidsLimit limit) (zip prevClusters newClusters)
+
+searchPosition :: (Int, Int, Int) -> [(Int, Int, Int)] -> [(Int, Int)] -> Maybe (Int, Int)
+searchPosition _ [] _ = Nothing
+searchPosition pixel (p:ps) (pos:poss)
+    | pixel == p = Just pos
+    | otherwise = searchPosition pixel ps poss
