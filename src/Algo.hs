@@ -19,17 +19,17 @@ data Clusters = Clusters {
 } deriving Show
 
 randomInt :: Int -> Int -> IO Int
-randomInt min max = randomRIO (min, max)
+randomInt minValue maxValue = randomRIO (minValue, maxValue)
 
 -- createCluster :: (Int, Int, Int) -> Clusters
 -- createCluster centroid = Clusters { centroides = centroid, pixels = [] }
 
 generateClusters :: [(Int, Int, Int)] -> Int -> Int -> Int -> IO [Clusters]
 generateClusters _ 0 _ _ = return []
-generateClusters list n min max = do
-    centroidValue <- randomInt min max
+generateClusters list n minValue maxValue = do
+    centroidValue <- randomInt minValue maxValue
     centroid <- generateCentroides list centroidValue
-    rest <- generateClusters list (n - 1) min max
+    rest <- generateClusters list (n - 1) minValue maxValue
     return (Clusters { centroides = centroid, pixels = [] } : rest)
 
 generateCentroides :: [(Int, Int, Int)] -> Int -> IO (Int, Int, Int)
@@ -121,8 +121,8 @@ printpixels (pixel:pixels) list positions = do
     printpixels pixels list positions
 
 algo :: [(Int, Int, Int)] -> [(Int, Int)] -> Int -> Int -> Int -> Float -> IO ()
-algo pixels pos numberofcluster min max convergenceLimit = do
-    clusters <- generateClusters pixels numberofcluster min max
+algo pixels pos numberofcluster minValue maxValue convergenceLimit = do
+    clusters <- generateClusters pixels numberofcluster minValue maxValue
     pixelsattribuer <- attributePixels clusters pixels
     finalClusters <- loop pixelsattribuer pixels convergenceLimit
     printcluster finalClusters pixels pos
