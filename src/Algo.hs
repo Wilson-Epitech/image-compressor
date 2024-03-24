@@ -70,3 +70,6 @@ calculateMean [] = (0, 0, 0)
 calculateMean xs = let (sumR, sumG, sumB) = foldl' addTwoTuples (0, 0, 0) xs
                        n = length xs
                    in (sumR `div` n, sumG `div` n, sumB `div` n)
+
+addTwoTuples :: (Int, Int, Int) -> (Int, Int, Int) -> (Int, Int, Int)
+addTwoTuples (r1, g1, b1) (r2, g2, b2) = (r1 + r2, g1 + g2, b1 + b2)
