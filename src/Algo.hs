@@ -5,8 +5,9 @@
 -- Algo
 --
 
-module Algo {
-} where
+module Algo (
+    algo
+) where
 
 import System.Environment (getArgs)
 import System.Exit (exitWith, ExitCode(ExitFailure))
