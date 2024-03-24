@@ -20,3 +20,6 @@ data Clusters = Clusters {
 
 randomInt :: Int -> Int -> IO Int
 randomInt min max = randomRIO (min, max)
+
+createCluster :: (Int, Int, Int) -> Clusters
+createCluster centroid = Clusters { centroides = centroid, pixels = [] }
