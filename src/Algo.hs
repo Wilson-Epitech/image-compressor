@@ -36,3 +36,11 @@ generateCentroides :: [(Int, Int, Int)] -> Int -> IO (Int, Int, Int)
 generateCentroides (x:_) 0 = return x
 generateCentroides (_:xs) n = generateCentroides xs (n - 1)
 generateCentroides [] _ = error "error"
+
+distance :: (Int, Int, Int) -> (Int, Int, Int) -> Float
+distance (r1, g1, b1) (r2, g2, b2) =
+    let r = fromIntegral (r1 - r2)^2
+        g = fromIntegral (g1 - g2)^2
+        b = fromIntegral (b1 - b2)^2
+        distanceSquared = r + g + b
+    in sqrt distanceSquared
