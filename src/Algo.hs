@@ -61,3 +61,6 @@ updateClusters [] _ _ = []
 updateClusters (Clusters centroid' pixels':cs) (Clusters centroid _) pixel
     | centroid == centroid' = (addPixelToCluster (Clusters centroid' pixels') pixel) : updateClusters cs (Clusters centroid' pixels') pixel
     | otherwise = (Clusters centroid' pixels') : updateClusters cs (Clusters centroid pixels') pixel
+
+addPixelToCluster :: Clusters -> (Int, Int, Int) -> Clusters
+addPixelToCluster (Clusters centroid pixels) pixel = Clusters centroid (pixel:pixels)
