@@ -8,6 +8,7 @@
 module Main (main) where
 import System.Environment (getArgs)
 import ErrorHandling
+import Parsing
 
 -- error handling: file exist ?
 --faire un try/catch pour savoir si le file exsist
