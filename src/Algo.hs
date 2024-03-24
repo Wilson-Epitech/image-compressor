@@ -23,3 +23,11 @@ randomInt min max = randomRIO (min, max)
 
 createCluster :: (Int, Int, Int) -> Clusters
 createCluster centroid = Clusters { centroides = centroid, pixels = [] }
+
+generateClusters :: [(Int, Int, Int)] -> Int -> Int -> Int -> IO [Clusters]
+generateClusters _ 0 _ _ = return []
+generateClusters list n min max = do
+    centroidValue <- randomInt min max
+    centroid <- generateCentroides list centroidValue
+    rest <- generateClusters list (n - 1) min max
+    return (Clusters { centroides = centroid, pixels = [] } : rest)
