@@ -44,3 +44,14 @@ distance (r1, g1, b1) (r2, g2, b2) =
         b = fromIntegral (b1 - b2)^2
         distanceSquared = r + g + b
     in sqrt distanceSquared
+
+attributePixels :: [Clusters] -> [(Int, Int, Int)] -> IO [Clusters]
+attributePixels clusters [] = return clusters
+attributePixels clusters (pixel:pixels) = do
+    let assignPixel c1 c2 =
+            if distance (centroides c1) pixel <= distance (centroides c2) pixel
+                then c1
+                else c2
+    let loop = foldl assignPixel (head clusters) (tail clusters)
+    let updatedClusters = updateClusters clusters loop pixel
+    attributePixels updatedClusters pixels
