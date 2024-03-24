@@ -21,8 +21,8 @@ data Clusters = Clusters {
 randomInt :: Int -> Int -> IO Int
 randomInt min max = randomRIO (min, max)
 
-createCluster :: (Int, Int, Int) -> Clusters
-createCluster centroid = Clusters { centroides = centroid, pixels = [] }
+-- createCluster :: (Int, Int, Int) -> Clusters
+-- createCluster centroid = Clusters { centroides = centroid, pixels = [] }
 
 generateClusters :: [(Int, Int, Int)] -> Int -> Int -> Int -> IO [Clusters]
 generateClusters _ 0 _ _ = return []
@@ -98,6 +98,7 @@ checkConvergence prevClusters newClusters limit =
 
 searchPosition :: (Int, Int, Int) -> [(Int, Int, Int)] -> [(Int, Int)] -> Maybe (Int, Int)
 searchPosition _ [] _ = Nothing
+searchPosition _ _ [] = Nothing
 searchPosition pixel (p:ps) (pos:poss)
     | pixel == p = Just pos
     | otherwise = searchPosition pixel ps poss
