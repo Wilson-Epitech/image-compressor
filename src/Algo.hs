@@ -126,3 +126,10 @@ printpixels (pixel:pixels) list positions = do
         Just pos -> putStrLn (show pos ++ " " ++ show pixel)
         Nothing -> putStrLn "Pixel not found in the list of positions"
     printpixels pixels list positions
+
+algo :: [(Int, Int, Int)] -> [(Int, Int)] -> Int -> Int -> Int -> Float -> IO ()
+algo pixels pos numberofcluster min max convergenceLimit = do
+    clusters <- generateClusters pixels numberofcluster min max
+    pixelsattribuer <- attributePixels clusters pixels
+    finalClusters <- loop pixelsattribuer pixels convergenceLimit
+    printcluster finalClusters pixels pos
