@@ -6,6 +6,7 @@
 -}
 
 module Main (main) where
+import System.Environment (getArgs)
 import ErrorHandling
 
 -- error handling: file exist ?
