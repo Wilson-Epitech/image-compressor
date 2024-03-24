@@ -7,6 +7,7 @@
     
 module ErrorHandling (
     errorHandling,
+    checkLengthString,
     checkLengthFromList
 ) where
 
@@ -49,6 +50,11 @@ checkDataConf :: Conf -> IO ()
 checkDataConf conf
     | isNothing (nbcolors  conf) = exitWith84error
     | isNothing (cvglimit conf) = exitWith84error
+    | otherwise = return ()
+
+checkLengthString :: String -> IO ()
+checkLengthString str
+    | null str = exitWith84error
     | otherwise = return ()
 
 checkLengthFromList :: Int -> IO ()

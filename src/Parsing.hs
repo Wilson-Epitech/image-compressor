@@ -44,6 +44,7 @@ splitStr (x:xs)
 parseInput :: [String] -> IO List
 parseInput args = do
     contentFile <- readFile (args !! 5)
+    checkLengthString contentFile
     let contentFileTolines = lines contentFile
         test = unwords contentFileTolines
         content = splitStr test
