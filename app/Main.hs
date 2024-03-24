@@ -13,4 +13,9 @@ import ErrorHandling
 --retirer les positions (0,0)
 
 main :: IO ()
-main = errorHandling
+main = do
+    args <- getArgs
+    errorHandling args
+    list <- parseInput args
+    print (listOfTruples list)
+    print (listOfTuples list)
