@@ -109,3 +109,12 @@ searchPosition _ [] _ = Nothing
 searchPosition pixel (p:ps) (pos:poss)
     | pixel == p = Just pos
     | otherwise = searchPosition pixel ps poss
+
+printcluster :: [Clusters] -> [(Int, Int, Int)] -> [(Int, Int)] -> IO ()
+printcluster [] _ _ = return ()
+printcluster (cluster:clusters) list positions = do
+    putStrLn "--"
+    putStrLn (show (centroides cluster))
+    putStrLn "-"
+    printpixels (pixels cluster) list positions
+    printcluster clusters list positions
