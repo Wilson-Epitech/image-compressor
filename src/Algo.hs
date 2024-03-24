@@ -9,7 +9,6 @@ module Algo (
     algo
 ) where
 
-import System.Environment (getArgs)
 import System.Random
 import Data.List (foldl')
 import Lib
