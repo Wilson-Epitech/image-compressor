@@ -73,3 +73,8 @@ calculateMean xs = let (sumR, sumG, sumB) = foldl' addTwoTuples (0, 0, 0) xs
 
 addTwoTuples :: (Int, Int, Int) -> (Int, Int, Int) -> (Int, Int, Int)
 addTwoTuples (r1, g1, b1) (r2, g2, b2) = (r1 + r2, g1 + g2, b1 + b2)
+
+calculate :: Clusters -> IO Clusters
+calculate (Clusters centroid pixels) = do
+    let newCentroid = calculateMean pixels
+    return (Clusters { centroides = newCentroid, pixels = [] })
