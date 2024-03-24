@@ -10,7 +10,6 @@ module Algo (
 ) where
 
 import System.Environment (getArgs)
-import System.Exit (exitWith, ExitCode(ExitFailure))
 import System.Random
 import Data.List (foldl')
 import Lib
