@@ -18,11 +18,11 @@ import Error
 import Usage
 
 errorHandling :: [String] -> IO ()
-errorHandling args = do
-    checkNbArgs args
-    checkOrderArgs args
+errorHandling args =
+    checkNbArgs args >>
+    checkOrderArgs args >>
     let conf = getOpts defaultConf args
-    checkNegativeArgs conf
+    in checkNegativeArgs conf >>
     checkDataConf conf
 
 checkNegativeArgs :: Conf -> IO ()

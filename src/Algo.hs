@@ -1,9 +1,9 @@
---
+{-
 -- IMAGE_COMPRESSOR PROJECT, 2024
 -- image-compressor
 -- File description:
 -- Algo
---
+-}
 
 module Algo (
     algo
@@ -51,11 +51,15 @@ attributePixels clusters (pixel:pixels) = do
 updateClusters :: [Clusters] -> Clusters -> (Int, Int, Int) -> [Clusters]
 updateClusters [] _ _ = []
 updateClusters (Clusters centroid' pixels':cs) (Clusters centroid _) pixel
-    | centroid == centroid' = (addPixelToCluster (Clusters centroid' pixels') pixel) : updateClusters cs (Clusters centroid' pixels') pixel
-    | otherwise = (Clusters centroid' pixels') : updateClusters cs (Clusters centroid pixels') pixel
+    | centroid == centroid' =
+        (addPixelToCluster (Clusters centroid' pixels') pixel) :
+        updateClusters cs (Clusters centroid' pixels') pixel
+    | otherwise = (Clusters centroid' pixels') :
+        updateClusters cs (Clusters centroid pixels') pixel
 
 addPixelToCluster :: Clusters -> (Int, Int, Int) -> Clusters
-addPixelToCluster (Clusters centroid pixels) pixel = Clusters centroid (pixel:pixels)
+addPixelToCluster (Clusters centroid pixels)
+    pixel = Clusters centroid (pixel:pixels)
 
 calculateMean :: [(Int, Int, Int)] -> (Int, Int, Int)
 calculateMean [] = (0, 0, 0)
@@ -67,9 +71,9 @@ addTwoTuples :: (Int, Int, Int) -> (Int, Int, Int) -> (Int, Int, Int)
 addTwoTuples (r1, g1, b1) (r2, g2, b2) = (r1 + r2, g1 + g2, b1 + b2)
 
 calculate :: Clusters -> IO Clusters
-calculate (Clusters centroid pixels) = do
+calculate (Clusters centroid pixels) =
     let newCentroid = calculateMean pixels
-    return (Clusters { centroides = newCentroid, pixels = [] })
+    in return (Clusters { centroides = newCentroid, pixels = [] })
 
 calculateAll :: [Clusters] -> IO [Clusters]
 calculateAll clusters = mapM calculate clusters
@@ -105,21 +109,22 @@ searchPosition pixel (p:ps) (pos:poss)
 
 printcluster :: [Clusters] -> [(Int, Int, Int)] -> [(Int, Int)] -> IO ()
 printcluster [] _ _ = return ()
-printcluster (cluster:clusters) list positions = do
-    putStrLn "--"
-    putStrLn (show (centroides cluster))
-    putStrLn "-"
-    printpixels (pixels cluster) list positions
+printcluster (cluster:clusters) list positions = 
+    putStrLn "--" >>
+    putStrLn (show (centroides cluster)) >>
+    putStrLn "-" >>
+    printpixels (pixels cluster) list positions >>
     printcluster clusters list positions
 
 printpixels :: [(Int, Int, Int)] -> [(Int, Int, Int)] -> [(Int, Int)] -> IO ()
 printpixels [] _ _ = return ()
-printpixels (pixel:pixels) list positions = do
+printpixels (pixel:pixels) list positions =
     case searchPosition pixel list positions of
         Just pos -> putStrLn (show pos ++ " " ++ show pixel)
+            >> printpixels pixels list positions
         Nothing -> putStrLn "Pixel not found in the list of positions"
-    printpixels pixels list positions
-
+            >> printpixels pixels list positions
+    
 algo :: [(Int, Int, Int)] -> [(Int, Int)] -> Int -> Int -> Int -> Float -> IO ()
 algo pixels pos numberofcluster minValue maxValue convergenceLimit = do
     clusters <- generateClusters pixels numberofcluster minValue maxValue
