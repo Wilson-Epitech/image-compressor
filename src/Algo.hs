@@ -99,3 +99,7 @@ centroidsLimit limit (prevCluster, newCluster) =
 
 centroidDistance :: (Int, Int, Int) -> (Int, Int, Int) -> Float
 centroidDistance centroid1 centroid2 = distance centroid1 centroid2
+
+checkConvergence :: [Clusters] -> [Clusters] -> Float -> Bool
+checkConvergence prevClusters newClusters limit =
+    all (centroidsLimit limit) (zip prevClusters newClusters)
