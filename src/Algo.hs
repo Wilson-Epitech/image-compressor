@@ -96,3 +96,6 @@ loop clusters pixels convergenceLimit = loopUntilConvergence clusters
 centroidsLimit :: Float -> (Clusters, Clusters) -> Bool
 centroidsLimit limit (prevCluster, newCluster) =
     centroidDistance (centroides prevCluster) (centroides newCluster) <= limit
+
+centroidDistance :: (Int, Int, Int) -> (Int, Int, Int) -> Float
+centroidDistance centroid1 centroid2 = distance centroid1 centroid2
