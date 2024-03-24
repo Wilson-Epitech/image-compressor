@@ -36,14 +36,14 @@ generateCentroides [] _ = error "error"
 
 attributePixels :: [Clusters] -> [(Int, Int, Int)] -> IO [Clusters]
 attributePixels clusters [] = return clusters
-attributePixels clusters (pixel:pixels) = do
+attributePixels clusters (pixel:_pixels) =
     let assignPixel c1 c2 =
             if distance (centroides c1) pixel <= distance (centroides c2) pixel
                 then c1
                 else c2
-    let iteration = foldl assignPixel (head clusters) (tail clusters)
-    let updatedClusters = updateClusters clusters iteration pixel
-    attributePixels updatedClusters pixels
+        iteration = foldl assignPixel (head clusters) (tail clusters)
+        updatedClusters = updateClusters clusters iteration pixel
+    in attributePixels updatedClusters _pixels
 
 updateClusters :: [Clusters] -> Clusters -> (Int, Int, Int) -> [Clusters]
 updateClusters [] _ _ = []
@@ -55,8 +55,8 @@ updateClusters (Clusters centroid' pixels':cs) (Clusters centroid _) pixel
         updateClusters cs (Clusters centroid pixels') pixel
 
 addPixelToCluster :: Clusters -> (Int, Int, Int) -> Clusters
-addPixelToCluster (Clusters centroid pixels)
-    pixel = Clusters centroid (pixel:pixels)
+addPixelToCluster (Clusters centroid existingPixels) newPixel =
+    Clusters centroid (newPixel:existingPixels)
 
 calculateMean :: [(Int, Int, Int)] -> (Int, Int, Int)
 calculateMean [] = (0, 0, 0)
@@ -68,23 +68,24 @@ addTwoTuples :: (Int, Int, Int) -> (Int, Int, Int) -> (Int, Int, Int)
 addTwoTuples (r1, g1, b1) (r2, g2, b2) = (r1 + r2, g1 + g2, b1 + b2)
 
 calculate :: Clusters -> IO Clusters
-calculate (Clusters centroid pixels) =
-    let newCentroid = calculateMean pixels
+calculate (Clusters _ existingPixels) =
+    let newCentroid = calculateMean existingPixels
     in return (Clusters { centroides = newCentroid, pixels = [] })
 
 calculateAll :: [Clusters] -> IO [Clusters]
 calculateAll clusters = mapM calculate clusters
 
 loop :: [Clusters] -> [(Int, Int, Int)] -> Float -> IO [Clusters]
-loop clusters pixels convergenceLimit = loopUntilConvergence clusters
+loop clusters inputPixels cvgLimit = loopUntilConvergence clusters
   where
     loopUntilConvergence prevClusters = do
         updatedClusters <- calculateAll prevClusters
-        attributedClusters <- attributePixels updatedClusters pixels
-        let convergenceReached = checkConvergence prevClusters attributedClusters convergenceLimit
-        if convergenceReached
-            then return attributedClusters
-            else loopUntilConvergence attributedClusters
+        attrClusters <- attributePixels updatedClusters inputPixels
+        let cvgReach = checkConvergence prevClusters attrClusters cvgLimit
+        if cvgReach
+            then return attrClusters
+            else loopUntilConvergence attrClusters
+
 
 centroidsLimit :: Float -> (Clusters, Clusters) -> Bool
 centroidsLimit limit (prevCluster, newCluster) =
@@ -115,16 +116,16 @@ printcluster (cluster:clusters) list positions =
 
 printpixels :: [(Int, Int, Int)] -> [(Int, Int, Int)] -> [(Int, Int)] -> IO ()
 printpixels [] _ _ = return ()
-printpixels (pixel:pixels) list positions =
-    case searchPosition pixel list positions of
-        Just pos -> putStrLn (show pos ++ " " ++ show pixel)
-            >> printpixels pixels list positions
+printpixels (p:ps) list positions =
+    case searchPosition p list positions of
+        Just pos -> putStrLn (show pos ++ " " ++ show p)
+            >> printpixels ps list positions
         Nothing -> putStrLn "Pixel not found in the list of positions"
-            >> printpixels pixels list positions
+            >> printpixels ps list positions
 
 algo :: [(Int, Int, Int)] -> [(Int, Int)] -> Int -> Int -> Int -> Float -> IO ()
-algo pixels pos numberofcluster minValue maxValue convergenceLimit = do
-    clusters <- generateClusters pixels numberofcluster minValue maxValue
-    pixelsattribuer <- attributePixels clusters pixels
-    finalClusters <- loop pixelsattribuer pixels convergenceLimit
-    printcluster finalClusters pixels pos
+algo pxls pos numberofcluster minValue maxValue convergenceLimit = do
+    clusters <- generateClusters pxls numberofcluster minValue maxValue
+    pixelsattribuer <- attributePixels clusters pxls
+    finalClusters <- loop pixelsattribuer pxls convergenceLimit
+    printcluster finalClusters pxls pos
