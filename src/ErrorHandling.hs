@@ -51,11 +51,6 @@ checkDataConf conf
     | isNothing (cvglimit conf) = exitWith84error
     | otherwise = return ()
 
-checkLengthString :: String -> IO ()
-checkLengthString str
-    | length str == 0 = exitWith84error
-    | otherwise = return ()
-
 checkLengthFromList :: Int -> IO ()
 checkLengthFromList n
     | isEven n == True = exitWith84error
