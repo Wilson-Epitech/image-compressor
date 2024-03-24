@@ -16,64 +16,13 @@ import Lib
 import Error
 import Usage
 
--- deplacer isEven et countElements dans lib.hs
-
--- data List = List {
---     listOfTruples :: [(Int, Int, Int)],
---     listOfTuples :: [(Int, Int)]
--- } deriving Show
-
--- defaultList :: List
--- defaultList = List {
---     listOfTruples = [],
---     listOfTuples = []
--- }
-
--- isEven :: Int -> Bool
--- isEven n
---     | n `mod` 2 == 0 = False
---     | otherwise = True
-
--- countElements :: [String] -> Int
--- countElements = length
-
--- checkLengthFromList :: Int -> IO ()
--- checkLengthFromList n
---     | isEven n == True = exitWith84error
---     | otherwise = return ()
-
--- processStrings :: [String] -> List -> List
--- processStrings [] list = list
--- processStrings (x:xs) (List t3s t2s)
---     | countNumbers x == 1 = processStrings xs
---         (List t3s ((read x :: (Int, Int)) : t2s))
---     | countNumbers x == 2 = processStrings xs
---         (List ((read x :: (Int, Int, Int)) : t3s) t2s)
---     | otherwise = processStrings xs (List t3s t2s)
-
--- splitStr :: String -> [String]
--- splitStr [] = []
--- splitStr (x:xs)
---     | x `elem` " " = splitStr xs
---     | otherwise = tuple : splitStr rest
---     where
---         (tuple, rest) = break (`elem` " ") (x:xs)
-
 errorHandling :: [String] -> IO ()
 errorHandling args = do
-    -- args <- getArgs
     checkNbArgs args
     checkOrderArgs args
     let conf = getOpts defaultConf args
     checkNegativeArgs conf
     checkDataConf conf
-    -- contentFile <- readFile (args !! 5)
-    -- let contentFileTolines = lines contentFile
-    --     test = unwords contentFileTolines
-    --     content = splitStr test
-    --     result = processStrings content defaultList
-    -- -- checkLengthFromList (countElements content)
-    -- print result
 
 checkNegativeArgs :: Conf -> IO ()
 checkNegativeArgs conf
