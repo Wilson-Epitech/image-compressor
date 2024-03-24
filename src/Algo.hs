@@ -118,3 +118,11 @@ printcluster (cluster:clusters) list positions = do
     putStrLn "-"
     printpixels (pixels cluster) list positions
     printcluster clusters list positions
+
+printpixels :: [(Int, Int, Int)] -> [(Int, Int, Int)] -> [(Int, Int)] -> IO ()
+printpixels [] _ _ = return ()
+printpixels (pixel:pixels) list positions = do
+    case searchPosition pixel list positions of
+        Just pos -> putStrLn (show pos ++ " " ++ show pixel)
+        Nothing -> putStrLn "Pixel not found in the list of positions"
+    printpixels pixels list positions
