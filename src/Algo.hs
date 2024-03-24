@@ -64,3 +64,9 @@ updateClusters (Clusters centroid' pixels':cs) (Clusters centroid _) pixel
 
 addPixelToCluster :: Clusters -> (Int, Int, Int) -> Clusters
 addPixelToCluster (Clusters centroid pixels) pixel = Clusters centroid (pixel:pixels)
+
+calculateMean :: [(Int, Int, Int)] -> (Int, Int, Int)
+calculateMean [] = (0, 0, 0)
+calculateMean xs = let (sumR, sumG, sumB) = foldl' addTwoTuples (0, 0, 0) xs
+                       n = length xs
+                   in (sumR `div` n, sumG `div` n, sumB `div` n)
