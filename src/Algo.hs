@@ -55,3 +55,9 @@ attributePixels clusters (pixel:pixels) = do
     let loop = foldl assignPixel (head clusters) (tail clusters)
     let updatedClusters = updateClusters clusters loop pixel
     attributePixels updatedClusters pixels
+
+updateClusters :: [Clusters] -> Clusters -> (Int, Int, Int) -> [Clusters]
+updateClusters [] _ _ = []
+updateClusters (Clusters centroid' pixels':cs) (Clusters centroid _) pixel
+    | centroid == centroid' = (addPixelToCluster (Clusters centroid' pixels') pixel) : updateClusters cs (Clusters centroid' pixels') pixel
+    | otherwise = (Clusters centroid' pixels') : updateClusters cs (Clusters centroid pixels') pixel
