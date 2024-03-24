@@ -44,8 +44,8 @@ attributePixels clusters (pixel:pixels) = do
             if distance (centroides c1) pixel <= distance (centroides c2) pixel
                 then c1
                 else c2
-    let loop = foldl assignPixel (head clusters) (tail clusters)
-    let updatedClusters = updateClusters clusters loop pixel
+    let iteration = foldl assignPixel (head clusters) (tail clusters)
+    let updatedClusters = updateClusters clusters iteration pixel
     attributePixels updatedClusters pixels
 
 updateClusters :: [Clusters] -> Clusters -> (Int, Int, Int) -> [Clusters]
