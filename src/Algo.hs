@@ -92,3 +92,7 @@ loop clusters pixels convergenceLimit = loopUntilConvergence clusters
         if convergenceReached
             then return attributedClusters
             else loopUntilConvergence attributedClusters
+
+centroidsLimit :: Float -> (Clusters, Clusters) -> Bool
+centroidsLimit limit (prevCluster, newCluster) =
+    centroidDistance (centroides prevCluster) (centroides newCluster) <= limit
