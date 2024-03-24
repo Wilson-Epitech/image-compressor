@@ -78,3 +78,6 @@ calculate :: Clusters -> IO Clusters
 calculate (Clusters centroid pixels) = do
     let newCentroid = calculateMean pixels
     return (Clusters { centroides = newCentroid, pixels = [] })
+
+calculateAll :: [Clusters] -> IO [Clusters]
+calculateAll clusters = mapM calculate clusters
