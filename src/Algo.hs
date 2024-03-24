@@ -81,3 +81,14 @@ calculate (Clusters centroid pixels) = do
 
 calculateAll :: [Clusters] -> IO [Clusters]
 calculateAll clusters = mapM calculate clusters
+
+loop :: [Clusters] -> [(Int, Int, Int)] -> Float -> IO [Clusters]
+loop clusters pixels convergenceLimit = loopUntilConvergence clusters
+  where
+    loopUntilConvergence prevClusters = do
+        updatedClusters <- calculateAll prevClusters
+        attributedClusters <- attributePixels updatedClusters pixels
+        let convergenceReached = checkConvergence prevClusters attributedClusters convergenceLimit
+        if convergenceReached
+            then return attributedClusters
+            else loopUntilConvergence attributedClusters
