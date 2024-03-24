@@ -31,3 +31,8 @@ generateClusters list n min max = do
     centroid <- generateCentroides list centroidValue
     rest <- generateClusters list (n - 1) min max
     return (Clusters { centroides = centroid, pixels = [] } : rest)
+
+generateCentroides :: [(Int, Int, Int)] -> Int -> IO (Int, Int, Int)
+generateCentroides (x:_) 0 = return x
+generateCentroides (_:xs) n = generateCentroides xs (n - 1)
+generateCentroides [] _ = error "error"
