@@ -9,6 +9,7 @@ module Algo (
     algo
 ) where
 
+import Data.List (delete)
 import System.Random
 import Data.List (foldl')
 import Lib
@@ -118,10 +119,14 @@ printpixels :: [(Int, Int, Int)] -> [(Int, Int, Int)] -> [(Int, Int)] -> IO ()
 printpixels [] _ _ = return ()
 printpixels (p:ps) list positions =
     case searchPosition p list positions of
-        Just pos -> putStrLn (show pos ++ " " ++ show p)
-            >> printpixels ps list positions
-        Nothing -> putStrLn "Pixel not found in the list of positions"
-            >> printpixels ps list positions
+        Just pos ->
+            putStrLn (show pos ++ " " ++ show p) >>
+            let updatedList = delete p list
+                updatedPositions = delete pos positions
+            in printpixels ps updatedList updatedPositions
+        Nothing ->
+            putStrLn "Pixel not found in the list of positions" >>
+            printpixels ps list positions
 
 algo :: [(Int, Int, Int)] -> [(Int, Int)] -> Int -> Int -> Int -> Float -> IO ()
 algo pxls pos numberofcluster minValue maxValue convergenceLimit = do
