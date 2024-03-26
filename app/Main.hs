@@ -20,8 +20,8 @@ getStructArgs :: [String] -> IO ()
 getStructArgs args = do
     list <- parseInput args
     let conf = getOpts defaultConf args
-        pixels = listOfTruples list
-        pos = listOfTuples list
+        pixels = reverse (listOfTruples list)
+        pos = reverse (listOfTuples list)
         numberofcluster = maybe 0 id (nbcolors conf)
         minVal = 0
         maxVal = numberofcluster - 1

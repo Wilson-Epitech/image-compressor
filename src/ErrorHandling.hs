@@ -4,7 +4,7 @@
 -- File description:
 -- ErrorHandling
 -}
-    
+
 module ErrorHandling (
     errorHandling,
     checkLengthString,

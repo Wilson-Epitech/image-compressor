@@ -87,7 +87,6 @@ loop clusters inputPixels cvgLimit = loopUntilConvergence clusters
             then return attrClusters
             else loopUntilConvergence attrClusters
 
-
 centroidsLimit :: Float -> (Clusters, Clusters) -> Bool
 centroidsLimit limit (prevCluster, newCluster) =
     centroidDistance (centroides prevCluster) (centroides newCluster) <= limit
