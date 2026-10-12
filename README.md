@@ -14,7 +14,7 @@
 
 <p align="center"><img src=".github/assets/image-compressor-before-after.png" alt="Image Compressor" width="820"/></p>
 
-## En deux mots
+## Le projet en quelques mots
 
 On donne au programme la liste des pixels d'une image, et il les regroupe en *N* couleurs avec **k-means**. Ci-dessus : l'image d'origine, puis la même image réduite à 8 couleurs par le programme.
 
@@ -24,10 +24,6 @@ On donne au programme la liste des pixels d'une image, et il les regroupe en *N*
 - **k-means** : centroïdes de départ, affectation par distance euclidienne, recalcul jusqu'à convergence
 - Nombre de couleurs (`-n`) et seuil de convergence (`-l`) réglables
 - Gestion d'erreurs stricte (arguments, format du fichier) avec code de sortie 84
-
-## Sous le capot
-
-Tout est pur, sauf la lecture du fichier et l'affichage. Chaque itération réaffecte les pixels au centroïde le plus proche, puis déplace chaque centroïde au barycentre de son groupe, jusqu'à ce qu'aucun ne bouge plus que la limite `-l`.
 
 ## Lancer le projet
 
@@ -43,4 +39,4 @@ make
 
 Wilson Bordichon, Bradley Malbrouck
 
-**Ma part :** J'ai écrit le **parsing des arguments** et des pixels, toute la **gestion d'erreurs**, le calcul de distance, une partie de l'algorithme et le point d'entrée du programme.
+**Ma partition :** J'ai écrit le **parsing des arguments** et des pixels, toute la **gestion d'erreurs**, le calcul de distance, une partie de l'algorithme et le point d'entrée du programme.
