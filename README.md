@@ -38,4 +38,4 @@ make
 
 Wilson Bordichon, Bradley Malbrouck
 
-**Ma partition :** J'ai écrit la majeure partie du programme : le **parsing des arguments** et des pixels, la **gestion d'erreurs**, l'algorithme **k-means** et le point d'entrée.
+**Ma partition :** J'ai écrit le **parsing des arguments** et des pixels, toute la **gestion d'erreurs**, le point d'entrée et la configuration du projet, et le calcul de distance de l'algorithme.
