@@ -30,7 +30,6 @@ On donne au programme la liste des pixels d'une image, et il les regroupe en *N*
 ```bash
 make
 ./imageCompressor -n 8 -l 0.5 -f examples/rose.txt
-# sortie : chaque couleur finale suivie de la liste de ses pixels
 ```
 
 ## L'équipe
